@@ -1,0 +1,135 @@
+#loading{
+    float: right;
+    margin: 5px -30px 0 0;
+}
+
+.pagination{
+    display: block;
+    float: right;
+    margin: 10px 0 -35px 0;
+    padding-right: 1px;
+	width:200px;
+}
+
+.pagination .prev-page{
+    background:url('../../../public/images/left.png') no-repeat;
+	width:22px;
+	height:26px;
+	margin-top:-2px;
+	text-indent:-9000px;
+	cursor:pointer;
+	opacity:0.8;
+	float:right;
+	display:inline;
+}
+
+.pagination .prev-page:hover{
+   	opacity:1;
+}
+
+.pagination .next-page{
+	right:12px;
+	left:auto;
+	background:url('../../../public/images/right.png') no-repeat;
+	width:22px;
+	height:26px;
+	margin-top:-1px;
+	text-indent:-9000px;
+	cursor:pointer;
+	opacity:0.8;
+	float:right;
+	display:inline;
+}
+
+.pagination .next-page:hover{
+	opacity:1;
+}
+
+.pagination .page-info{
+	float:right;
+	display:inline;
+	color:#A9ACB1;
+	margin:4px 7px 0 5px;
+	font-weight:bold;
+}
+
+.pagination .filters{
+	list-style: none;
+    border:solid #eee;
+    border-width:1px;
+    padding: 2px 6px 2px 6px;
+    margin: 0 2px 0 2px;
+    font-size: 11px;
+    color: #aaa;
+    background-color: #fff;
+    display: inline !important;
+	float:right;
+	cursor:pointer;
+	padding: 5px 8px 5px 8px; 
+    border-radius:25px;
+    border: solid 1px #eee;
+    text-align: right;
+	text-transform:uppercase;
+}
+
+.pagination .filters:hover, .pagination .selected{
+   color: #859F50;
+   background: #C3DD7D;
+   border: solid 1px #A0AB8D;    
+   cursor: pointer;
+}
+
+.pagination-u{
+    display: block;
+    float: right;
+    margin: 9px 26px -35px 0;
+    padding-right: 1px;
+	width:200px;
+}
+
+.pagination-u .prev-page{
+    background:url('../../../public/images/left_s.png') no-repeat;
+	width:22px;
+	height:26px;
+	margin-top:0px;
+	text-indent:-9000px;
+	cursor:pointer;
+	opacity:0.8;
+	float:right;
+	display:inline;
+}
+
+.pagination-u .prev-page:hover{
+   	opacity:1;
+}
+
+.pagination-u .next-page{
+	right:12px;
+	left:auto;
+	background:url('../../../public/images/right_s.png') no-repeat;
+	width:22px;
+	height:26px;
+	margin-top:-1px;
+	text-indent:-9000px;
+	cursor:pointer;
+	opacity:0.8;
+	float:right;
+	display:inline;
+}
+
+.pagination-u .next-page:hover{
+	opacity:1;
+}
+
+.pagination-u .page-info{
+	float:right;
+	display:inline;
+	color:#A9ACB1;
+	margin: 2px 6px 0 0px;
+	font-weight:bold;
+	font-size: 11px;
+}
+
+
+
+

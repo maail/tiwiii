@@ -15,7 +15,7 @@ class TV_Model extends Model
 				
 	}
 	
-	public function shows($genre, $page)
+	public function shows($type, $page, $filter)
 	{
 		$query    = new Model();
 		
@@ -28,18 +28,18 @@ class TV_Model extends Model
 	    $start    = ($page-1)*$per_page;
 		
 		$showdash = array('science-fiction','mini-series');
-		if(!(in_array($genre,$showdash))){$genre = str_replace( '-', ' ', $genre);}
+		if(!(in_array($type,$showdash))){$type = str_replace( '-', ' ', $type);}
 	
 	    $cur_page = $page;
 	    
 	    /*----------------------------------------------------------------------*/
-	    if($genre == 'all'){
+	    if($type == 'all'){
 	    $sql = " SELECT count(*) as no_count
 	             FROM   shows";
 	    }else{
 	    $sql = " SELECT count(*) as no_count
 	    		 FROM   shows
-	    		 WHERE  show_genre LIKE '%$genre%'";   
+	    		 WHERE  show_genre LIKE '%$type%'";   
 	    }
 	    if($query->query($sql))
 	    {
@@ -60,7 +60,7 @@ class TV_Model extends Model
 		
 	
 	    /*----------------------------------------------------------------------*/
-	    if($genre == 'all'){
+	    if($type == 'all'){
 			if((!isset( $_SESSION['tiwiii_uids8565'])))
 			{
 				$sql = " SELECT     show_name, tvdb_id as s_id FROM shows
@@ -77,14 +77,14 @@ class TV_Model extends Model
 		if((!isset( $_SESSION['tiwiii_uids8565'])))
 			{
 				$sql = " SELECT     show_name, tvdb_id as s_id FROM shows
-						 WHERE      show_genre LIKE '%$genre%'
+						 WHERE      show_genre LIKE '%$type%'
 						 ORDER BY   show_id ASC
 						 LIMIT      $start,$per_page ";
 			}else{
 				 $tiwiii_uid = $_SESSION['tiwiii_uids8565'];
 				 $sql = " SELECT     show_name, s.tvdb_id as s_id, uf.uf_id, uw.uw_id, uv.uv_id
 						 FROM 		shows s LEFT JOIN user_fave uf on uf.tvdb_id = s.tvdb_id and uf.userid = '$tiwiii_uid' LEFT JOIN user_watch uw on uw.tvdb_id = s.tvdb_id and uw.userid = '$tiwiii_uid' LEFT JOIN user_vote uv on uv.tvdb_id = s.tvdb_id and uv.userid = '$tiwiii_uid'
-						 WHERE      show_genre LIKE '%$genre%'
+						 WHERE      show_genre LIKE '%$type%'
 						 ORDER BY   show_id ASC
 						 LIMIT      $start,$per_page ";
 			}
@@ -159,9 +159,9 @@ class TV_Model extends Model
 	    
 	    $msg .= "<ul class='pagination'>";
 			 
-		 if($next <= $pages)$msg .= '<li  genre="'.$genre.'" page="'.$next.'" class="next-page">Next</li>';
+		 if($next <= $pages)$msg .= '<li  type="'.$type.'" page="'.$next.'" class="next-page">Next</li>';
 		 if($page <= $pages) $msg .= "<li class='page-info'>$page of $pages</li>";
-		 if($prev > 0)$msg .= '<li  genre="'.$genre.'" page="'.$prev.'" class="prev-page">Prev</li>';
+		 if($prev > 0)$msg .= '<li  type="'.$type.'" page="'.$prev.'" class="prev-page">Prev</li>';
 		 
 	    $msg .= "</ul>";
 		
@@ -182,7 +182,13 @@ class TV_Model extends Model
 		
 	    </script>
 	    ";
-	    echo $msg;
-			
+	    if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])=='xmlhttprequest')
+		{
+			echo $msg;
+		}
+		else
+		{
+	    	return $msg;
+		}
 	}
 }

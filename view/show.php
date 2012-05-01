@@ -12,8 +12,13 @@
 			if($action == 'show_info'){
 		?>
         <div id="main">
-       
-			<div id="the-show">
+        <ul class="show-nav">
+       			<li id="overview" class="selected">Overview</li>
+                <li id="activity" show="<?php echo $tvdb_id;?>">Activity</li>
+                <li id="review">Reviews</li>
+                <li id="media">Media</li>
+        </ul>
+       		<div id="the-show">
 				<div id="show-poster">
                 	<?php 
 						if($show_status == 'Ended'){?><div id="status"></div><?php } 
@@ -75,9 +80,10 @@
 						<p><strong>Air Time :  </strong><?php echo $show_airday.$s_a;?></p>
 					</div>
 					<div style="clear:both;"></div>
+                   
 					
 				</div>
-				<div id="options" style="float:right;width:340px;margin: -20px 0 0 229px;position: absolute;z-index: 2;">
+                <div id="options" style="float:right;width:340px;margin: -20px 0 0 229px;position: absolute;z-index: 2;">
                      <div id="share-options" style="float:left;">
                     <a style="float:left;" href="http://pinterest.com/pin/create/button/?description=<?php echo $show_name; ?>" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a>
                     <div class="fb-like" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-action="like" style="margin: 0 0 0 5px;
@@ -118,7 +124,7 @@ float: left;"></div>
                 
             </ul>
             
-             <div id="myModal" class="reveal-modal">
+            <div id="myModal" class="reveal-modal">
 			
 			</div>
             
@@ -131,7 +137,7 @@ float: left;"></div>
 				 
 				 if($show_status == 'Ended'){$episode_info = "Last Episode";}else{$episode_info = "Next Episode";}
 			?>
-           
+           <div id="container"></div>
 			<div id="the-show-ep" style="margin:40px 0 0 10px;">
              <span id="episode-info"><?php echo $episode_info; ?></span>
 				<div class="shows">
@@ -241,7 +247,7 @@ float: left;"></div>
         </div>
         </div>
         
-      
+   <script src="<?php echo URL; ?>public/js/pagination-as.js" type="text/javascript"></script>   
 <script>
 $(function(){   
 	$(".remote-buttons").tipTip({defaultPosition:"top"});
@@ -253,23 +259,28 @@ $(document).ready(function()
 {	
 	var pagetitle = document.title;
 	$(window).hashchange( function(){
-     
+     	
 		var epid_hash = location.hash;
-		var epid      =(epid_hash.replace(/\/?#/, ""));
+		var epid_hash =(epid_hash.replace(/\/?#/, ""));
+		var epid      = epid_hash.match(/[0-9 -()+]+$/);
 		
-		
-		if(epid != ""){
-			$.ajax({
-					url: "http://tiwiii.com/show/episode/"+epid+"",
-					type: "POST",
-					success: function(msg){
-						 $('#the-show-ep').replaceWith( msg );
-						 var ep_name = $('#ep-name').text();
-						 document.title= pagetitle + " / " + ep_name;
-					}
-			 });
+		var intRegex = /^\d+$/;
+		//alert(epid);
+		if(intRegex.test(epid))
+		{
+			if(epid != ""){
+				$('#container').hide();
+				$.ajax({
+						url: "http://tiwiii2.local/show/episode/"+epid+"",
+						type: "POST",
+						success: function(msg){
+							 $('#the-show-ep').replaceWith( msg );
+							 var ep_name = $('#ep-name').text();
+							 document.title= pagetitle + " / " + ep_name;
+						}
+				 });
+			}
 		}
-		
 	});
 	
 	$(window).hashchange();
@@ -296,7 +307,7 @@ $(document).ready(function()
 			  $('#feedback').text("You have checked in to "+checkin+".");
 			  
 			  $.ajax({
-					  url: "http://tiwiii.com/show/checkin/"+epid+"",
+					  url: "http://tiwiii2.local/show/checkin/"+epid+"",
 					  type: "POST"
 			   });
 			}
@@ -306,3 +317,4 @@ $(document).ready(function()
 	
 });
 </script>
+

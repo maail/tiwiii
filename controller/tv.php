@@ -20,8 +20,8 @@ class TV extends Controller
 		$this->view->render('tv');
 	}
 	
-	function shows($genre, $page)
+	function shows($type, $page, $filter= NULL)
 	{
-		$this->model->shows($genre, $page);
+		$this->view->shows = $this->model->shows($type, $page, $filter);
 	}
 }

@@ -1,3 +1,3 @@
 <?php
 
-define('URL', 'http://tiwiii.com/');
+define('URL', 'http://tiwiii2.local/');

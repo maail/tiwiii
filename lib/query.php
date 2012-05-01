@@ -155,6 +155,7 @@ class queryDB extends Connect
 		if (!empty($condition)) $sql .= " WHERE $condition";
 		
 		// insert values
+		//return $sql;
 		return $this->query($sql);
 	}
 		

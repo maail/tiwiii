@@ -168,11 +168,11 @@ class EpiOAuth
     curl_setopt($ch, CURLOPT_ENCODING, '');
     if($this->followLocation)
       curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-   // if(isset($_SERVER ['SERVER_ADDR']) && !empty($_SERVER['SERVER_ADDR']) && !preg_match('/^(10\.|127\.|192\.168\.|172\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\.)/', $_SERVER['SERVER_ADDR']))
-	//curl_setopt($ch, CURLOPT_INTERFACE, "205.186.175.91" );
+    if(isset($_SERVER ['SERVER_ADDR']) && !empty($_SERVER['SERVER_ADDR']) && !preg_match('/^(10\.|127\.|192\.168\.|172\.(16|17|18|19|20|21|22|23|24|25|26|27|28|29|30|31)\.)/', $_SERVER['SERVER_ADDR']))
+	curl_setopt($ch, CURLOPT_INTERFACE, "205.186.175.91" );
 
     // if the certificate exists then use it, else bypass ssl checks
-   /* if(file_exists($cert = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ca-bundle.crt'))
+    if(file_exists($cert = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ca-bundle.crt'))
     {
       curl_setopt($ch, CURLOPT_CAINFO, $cert);
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
@@ -182,7 +182,7 @@ class EpiOAuth
     {
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
       curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-    }*/
+    }
     return $ch;
   }
 

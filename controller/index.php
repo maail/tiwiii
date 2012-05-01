@@ -22,6 +22,8 @@ class Index extends Controller
 	
 	function home($type, $page, $filter)
 	{
-		$this->model->home($type, $page, $filter);
+		$this->view->home = $this->model->home($type, $page, $filter);
 	}
+	
+	
 }

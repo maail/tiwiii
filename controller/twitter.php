@@ -19,4 +19,9 @@ class Twitter extends Controller
 		 $this->model->callback();
 	}
 	
+	function tweet($status)
+	{
+		 $this->model->tweet($status);
+	}
+	
 }

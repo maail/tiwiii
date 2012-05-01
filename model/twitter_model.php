@@ -18,12 +18,12 @@ class Twitter_Model extends Model
 	public function callback()
 	{
 		#localhost(testing: dhisports)
-	/*	$consumer_key = 'TCP5WF9ttUa0whljQcI0MA';
-		$consumer_secret = 'K1MGzxKmqnAOz3cATGnlVV5tgNgJ4UR9DmsoykGi36w';*/
+		$consumer_key = 'TCP5WF9ttUa0whljQcI0MA';
+		$consumer_secret = 'K1MGzxKmqnAOz3cATGnlVV5tgNgJ4UR9DmsoykGi36w';
 		
 		#server(tiwiii)
-		$consumer_key = "deebX4zQrshSCPuwCibt2g";
-		$consumer_secret = "oEJFTE4DJnaDxgUF4hxQqIUJjIprT8Awv4tMfkUEYs";
+		/*$consumer_key = "deebX4zQrshSCPuwCibt2g";
+		$consumer_secret = "oEJFTE4DJnaDxgUF4hxQqIUJjIprT8Awv4tMfkUEYs";*/
 
 		$twitterObj = new EpiTwitter($consumer_key, $consumer_secret);
 		$url = $twitterObj->getAuthenticateUrl();
@@ -38,13 +38,13 @@ class Twitter_Model extends Model
 				$token = $twitterObj->getAccessToken();
 				
 				#localhost
-				/*setcookie("oauth_token", $token->oauth_token,time()+3600,"/", "", 0);
-				setcookie("oauth_token_secret", $token->oauth_token_secret, time()+3600, "/", "", 0);*/
+				setcookie("oauth_token", $token->oauth_token,time()+3600,"/", "", 0);
+				setcookie("oauth_token_secret", $token->oauth_token_secret, time()+3600, "/", "", 0);
 				
 				#server
-				$fifteen = 60 * 60 * 24 * 15 + time(); 
+				/*$fifteen = 60 * 60 * 24 * 15 + time(); 
 				setcookie("oauth_token", $token->oauth_token, $fifteen,"/", "", 0);
-				setcookie("oauth_token_secret", $token->oauth_token_secret, $fifteen,"/", "", 0);
+				setcookie("oauth_token_secret", $token->oauth_token_secret, $fifteen,"/", "", 0);*/
 				
 				$twitterObj->setToken($token->oauth_token, $token->oauth_token_secret);
 				
@@ -181,13 +181,13 @@ class Twitter_Model extends Model
 	public function tweet($status){
 		
 		#localhost(testing: dhisports)
-		/*$consumer_key = 'TCP5WF9ttUa0whljQcI0MA';
-		$consumer_secret = 'K1MGzxKmqnAOz3cATGnlVV5tgNgJ4UR9DmsoykGi36w';*/
+		$consumer_key = 'TCP5WF9ttUa0whljQcI0MA';
+		$consumer_secret = 'K1MGzxKmqnAOz3cATGnlVV5tgNgJ4UR9DmsoykGi36w';
 		
 		#server(tiwiii)
-		$consumer_key = "deebX4zQrshSCPuwCibt2g";
+	/*	$consumer_key = "deebX4zQrshSCPuwCibt2g";
 		$consumer_secret = "oEJFTE4DJnaDxgUF4hxQqIUJjIprT8Awv4tMfkUEYs";
-
+*/
 		$twitterObj = new EpiTwitter($consumer_key, $consumer_secret);
 		$twitterObj->setToken($_COOKIE['oauth_token'],$_COOKIE['oauth_token_secret']);
 

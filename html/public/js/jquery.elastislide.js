@@ -101,7 +101,7 @@
 			this.$slider		= this.$el.find('.es-carousel ul');
 			
 			// <li>
-			this.$items			= this.$slider.children('.show-thumb');
+			this.$items			= this.$slider.children('.show-thumb, .show-thumb2');
 			
 			// total number of elements / images
 			this.itemsCount		= this.$items.length;

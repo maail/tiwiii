@@ -1,7 +1,7 @@
 /*-----------------------------------------(feedback)--------------------------------------------*/
 $(document).ready(function() {
 	
-	var urlpath = "http://tiwiii.com";
+	var urlpath = "http://tiwiii2.local";
 	jQuery("#q").liveSearch({url: (''+urlpath+'/show/livesearch/?q=')}); // live search
    
    /* attach a submit handler to the form */
@@ -563,7 +563,7 @@ $(document).ready(function() {
 		}
 	});
 	
-	function loadDataUsers(page)
+	/*function loadDataUsers(page)
 	{
 		$.ajax
 		({
@@ -583,17 +583,17 @@ $(document).ready(function() {
 		var page   = $(this).attr('page');
 		loadDataUsers(page);
 		
-	});
+	});*/
 			 
- 
-
-	
-
-	
+ 	
 	$("#tour").click(function(){
 		$('#tModal').reveal();
     });
 	
+	$("#nav ul li a").click(function(){
+		$('#nav ul li a').addClass('selected');
+		$('#nav ul li a').removeClass('selected');
+    });
  });
  
  /* $(function(){$('#contactable').contactable({subject: 'feedback URL:'+location.href});});*/

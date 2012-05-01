@@ -1,0 +1,18 @@
+- tiwii to do
+	- pin stuff to shows/episodes
+		- add videos/youtube
+		- add pictures
+	- sign in without twitter, fb
+		- integrating all in one account
+	- find friends, fb, twitter
+	- fb timeline sync
+	- show watched episodes(checked into episodes will show as watched)
+	- custom lists
+	- follow users
+		- notifications
+	- recommend shows to users
+	- activity on shows/users
+	- episode discussion
+	- show reviews
+	
+	

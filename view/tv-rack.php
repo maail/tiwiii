@@ -207,27 +207,28 @@
 		echo "<a href=".$url_facebook." id='sign_in_f'>Sign in with facebook</a>";
  	}
 	?>
-    
+ <!--   
     <div id="users">
     <span>Current Users</span>
     <div style="clear:both;"></div>
     	<div id="users-page">
    
    	 </div>
-    </div> 
+    </div> -->
     
-    <div style="clear:both;"></div>
-     <div style="float:left;margin:40px 0 0 6px;">
+   <!-- <div style="clear:both;"></div>
+    <div style="float:left;margin:40px 0 0 6px;">
     	<div class="fb-like" data-href="http://www.facebook.com/tiwiiiapp" data-send="false" data-layout="button_count" data-width="40" data-show-faces="false" style="float: left;
 width: 78px;"></div>
         <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://tiwiii.com" data-text="Do not miss your favorite shows ever again. Sign into Tiwiii and keep track of your fave shows while sharing them with your friends." data-via="tiwiiiapp" data-related="tiwiiiapp" data-hashtags="tiwiii">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
     </div>
     
+    
     <div style="clear:both;"></div>
     <div style="float: right; margin: 20px 34px 0 5px;">
     	<a href="http://twitter.com/tiwiiiapp" id="twit_info" class='remote-buttons' title="Follow us on twitter" target="_blank">Twitter</a>
         <a href="http://www.facebook.com/pages/Tiwiii/297368720320320" class='remote-buttons' id="fb_info" title="Like us on Facebook" target="_blank">Facebook</a>
-    </div>
+    </div>-->
   
 </div>

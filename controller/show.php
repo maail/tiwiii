@@ -29,6 +29,8 @@ class Show extends Controller
 		$this->view->render('show');
 	}
 	
+	
+	
 	function episode($epid)
 	{
 		$this->model->episode($epid);
@@ -126,6 +128,11 @@ class Show extends Controller
 	function update_misc()
 	{
 		$this->model->update_misc();
+	}
+	
+	function activity($show, $page)
+	{
+		$this->model->activity($show, $page);
 	}
 	
 	function save()

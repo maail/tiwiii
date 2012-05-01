@@ -1,11 +1,11 @@
 <div style="clear:both"></div>
 <div id="footer">
-<p><a id='tour' href='#' class="links" >Tour</a> | <a href="#" class="links">About</a> | <a href="http://blog.tiwiii.com" class="links">Blog</a> | <a href="#" class="links">Terms</a> | <a href="#" class="links">Privacy</a> | <a href="#" class="links">API</a> | <a href="mailto:maail@tiwiii.com?subject=Your App is Awesome" class="links">Contact</a></p>
+<p><a id='tour' href='#' class="links" >Tour</a> | <a href="#" class="links">About</a> | <a href="http://blog.tiwiii.com" class="links">Blog</a> | <a href="#" class="links">Terms</a> | <a href="#" class="links">Privacy</a> | <a href="#" class="links">API</a> | <a href="mailto:maail@tiwiii.com?subject=Your App is Awesome" class="links">Contact</a> </p>
 <p>Tiwiii &copy; <?php echo date('Y');?>. A little web app developed by a fellow tv-aholic <a href="http://twitter.com/maail" target="_blank">@maail</a></p>
 <!--<p>Data provided by <a href="http://thetvdb.com" target="_blank">TheTVDB</a>. All posters and information shown are &copy; of the respective shows.</p>-->
 </div>
 <script type="text/javascript">
-var _sf_async_config={uid:30431,domain:"tiwiii.com"};
+/*var _sf_async_config={uid:30431,domain:"tiwiii.com"};
 (function(){
   function loadChartbeat() {
     window._sf_endpt=(new Date()).getTime();
@@ -29,13 +29,7 @@ var _sf_async_config={uid:30431,domain:"tiwiii.com"};
     uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/yxO2JVeRT3fhvBaHOD9eQ.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
   })();
-
-
-
-
-
-
-
+*/
 </script>
 <?php if(!isset($_COOKIE['first_time_check'])){ ?>
 	<script type="text/javascript">

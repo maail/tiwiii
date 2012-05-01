@@ -4,11 +4,11 @@
 }
 
 .pagination{
-    display: block;
-    float: right;
-    margin: 10px 0 -35px 0;
-    padding-right: 1px;
-	width:200px;
+   display: block;
+	float: right;
+	margin: 10px 202px -35px 0;
+	padding-right: 1px;
+	width: 200px;
 }
 
 .pagination .prev-page{
@@ -70,6 +70,7 @@
     border: solid 1px #eee;
     text-align: right;
 	text-transform:uppercase;
+	text-decoration:none;
 }
 
 .pagination .filters:hover, .pagination .selected{

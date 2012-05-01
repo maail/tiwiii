@@ -39,126 +39,148 @@ class Index_Model extends Model
 		$no_count = NULL;
 	    
 	    /*----------------------------------------------------------------------*/
-		if($type != 'recommendations'){
-	    if($type == 'undefined'){
-	    $sql = " SELECT show_id
-	             FROM   shows";
-	    }else if($type == 'fall')
+		if($type != 'recommendations')
 		{
-			$year     = date('Y');
-			$fromdate = ($year-1)."-08-01";
-			$todate   = ($year)."-07-31";
-			
-			if($filter == "canceled")
-			{	
-				$sql = " SELECT show_id
-						 FROM   shows
-						 WHERE  show_aired between '$fromdate' AND '$todate'
-						 AND    show_status = 'Ended'";     
-			}
-			else if($filter == "airing")
-			{	
-				$sql = " SELECT show_id
-						 FROM   shows
-						 WHERE  show_aired between '$fromdate' AND '$todate'
-						 AND    show_status = 'Continuing'";     
-			}
-			else
+			if($type == 'undefined')
 			{
-				  $sql = " SELECT show_id
-						   FROM   shows
-						   WHERE  show_aired between '$fromdate' AND '$todate'";        
-			}	
-			
-		}else if($type == 'faved'){
-	    $sql = "SELECT count(uf.tvdb_id) fave_count,s.tvdb_id, s.show_name
-				FROM   shows s LEFT JOIN user_fave uf on uf.tvdb_id = s.tvdb_id
-				GROUP BY s.tvdb_id
-				ORDER BY 1 DESC LIMIT 12";   
-	    }
-		else if($type == 'watched'){
-	    $sql = "SELECT count(uw.tvdb_id) watch_count,s.tvdb_id, s.show_name
-				FROM   shows s LEFT JOIN user_watch uw on uw.tvdb_id = s.tvdb_id
-				GROUP BY s.tvdb_id
-				ORDER BY 1 DESC LIMIT 12";   
-	    }
-		else if($type == 'top'){
-	  	$sql = "SELECT count(uv.tvdb_id) watch_count,s.show_name, s.tvdb_id as s_id
-				FROM   shows s LEFT JOIN user_vote uv on uv.tvdb_id = s.tvdb_id
-				GROUP BY s.tvdb_id
-				ORDER BY 1 DESC
-				LIMIT   12";   
-	    }else if($type == 'next'){
-			$tiwiii_uid = $_SESSION['tiwiii_uids8565'];
-			if(!empty($tiwiii_uid)){
-				$sql = "SELECT s.tvdb_id as s_id, s.show_name, e.episode_name, e.firstaired, e.episode_season, e.episode_number, e.tvdb_epid, e.episode_overview
-						FROM   episodes e, shows s LEFT JOIN user_watch uh ON uh.tvdb_id = s.tvdb_id
-						WHERE  e.tvdb_id = s.tvdb_id
-						AND    e.episode_season !=0
-						AND    firstaired > CURDATE()
-						AND    uh.userid = '$tiwiii_uid'
-						AND    e.episode_season !=0
-						GROUP  BY s.tvdb_id
-						ORDER BY firstaired ASC";
+				$sql = " SELECT show_id
+					 	 FROM   shows";
+			}
+			else if($type == 'fall')
+			{
+				$year     = date('Y');
+				$fromdate = ($year-1)."-08-01";
+				$todate   = ($year)."-07-31";
+				
+				
+				if($filter == "ended")
+				{	
+					$sql = " SELECT show_id
+							 FROM   shows
+							 WHERE  show_aired between '$fromdate' AND '$todate'
+							 AND    show_status = 'Ended'";     
+				}
+				else if($filter == "airing")
+				{	
+					$sql = " SELECT show_id
+							 FROM   shows
+							 WHERE  show_aired between '$fromdate' AND '$todate'
+							 AND    show_status = 'Continuing'";     
+				}
+				else
+				{
+					  $sql = " SELECT show_id
+							   FROM   shows
+							   WHERE  show_aired between '$fromdate' AND '$todate'";        
+				}	
+				
+			}
+			else if($type == 'faved')
+			{
+				$sql = "SELECT count(uf.tvdb_id) fave_count,s.tvdb_id, s.show_name
+						FROM   shows s LEFT JOIN user_fave uf on uf.tvdb_id = s.tvdb_id
+						GROUP BY s.tvdb_id
+						ORDER BY 1 DESC LIMIT 12";   
+			}
+			else if($type == 'watched')
+			{
+				$sql = "SELECT count(uw.tvdb_id) watch_count,s.tvdb_id, s.show_name
+						FROM   shows s LEFT JOIN user_watch uw on uw.tvdb_id = s.tvdb_id
+						GROUP BY s.tvdb_id
+						ORDER BY 1 DESC LIMIT 12";   
+			}
+			else if($type == 'top'){
+			$sql = "SELECT count(uv.tvdb_id) watch_count,s.show_name, s.tvdb_id as s_id
+					FROM   shows s LEFT JOIN user_vote uv on uv.tvdb_id = s.tvdb_id
+					GROUP BY s.tvdb_id
+					ORDER BY 1 DESC
+					LIMIT   12";   
+			}
+			else if($type == 'next')
+			{
+				$tiwiii_uid = $_SESSION['tiwiii_uids8565'];
+				if(!empty($tiwiii_uid))
+				{
+					$sql = "SELECT s.tvdb_id as s_id, s.show_name, e.episode_name, e.firstaired, e.episode_season, e.episode_number, e.tvdb_epid, e.episode_overview
+							FROM   episodes e, shows s LEFT JOIN user_watch uh ON uh.tvdb_id = s.tvdb_id
+							WHERE  e.tvdb_id = s.tvdb_id
+							AND    e.episode_season !=0
+							AND    firstaired > CURDATE()
+							AND    uh.userid = '$tiwiii_uid'
+							AND    e.episode_season !=0
+							GROUP  BY s.tvdb_id
+							ORDER BY firstaired ASC";
+				}
+			}
+			else if($type == 'today')
+			{
+				$sql2 = "SET time_zone = '-5:00'";	
+				$query->query($sql2);
+				if($filter == "watching")
+				{	
+					$tiwiii_uid = $_SESSION['tiwiii_uids8565'];
+					$sql = " SELECT s.tvdb_id, s.show_name
+							  FROM   episodes e, shows s LEFT JOIN user_fave uf on uf.tvdb_id = s.tvdb_id and uf.userid = '$tiwiii_uid' LEFT JOIN user_watch uw on uw.tvdb_id = s.tvdb_id and uw.userid = '$tiwiii_uid'
+							  WHERE  firstaired = CURDATE()
+							  AND    e.tvdb_id = s.tvdb_id
+							  AND    uw.uw_id IS NOT NULL
+							  GROUP BY s.tvdb_id";     
+				}
+				else
+				{
+					$sql = " SELECT s.tvdb_id, s.show_name
+							  FROM   episodes e, shows s
+							  WHERE  firstaired = CURDATE()
+							  AND    e.tvdb_id = s.tvdb_id
+							  GROUP BY s.tvdb_id";     
+				}
+			}
+			else if($type == 'yesterday')
+			{
+				$sql2 = "SET time_zone = '-5:00'";	
+				$query->query($sql2);
+				
+				if($filter == "watching")
+				{	
+					$tiwiii_uid = $_SESSION['tiwiii_uids8565'];
+					$sql = " SELECT s.tvdb_id, s.show_name
+							  FROM   episodes e, shows s LEFT JOIN user_fave uf on uf.tvdb_id = s.tvdb_id and uf.userid = '$tiwiii_uid' LEFT JOIN user_watch uw on uw.tvdb_id = s.tvdb_id and uw.userid = '$tiwiii_uid'
+							  WHERE  firstaired = date_sub(curdate(),interval 1 day)
+							  AND    e.tvdb_id = s.tvdb_id
+							  AND    uw.uw_id IS NOT NULL
+							  GROUP BY s.tvdb_id";     
+				}
+				else
+				{	
+					$sql = " SELECT s.tvdb_id, s.show_name
+							  FROM   episodes e, shows s
+							  WHERE  firstaired = date_sub(curdate(),interval 1 day)
+							  AND    e.tvdb_id = s.tvdb_id
+							  GROUP BY s.tvdb_id";  
+				}
+			}
+			else if($type == 'new')
+			{
+				$sql = " SELECT show_id
+						 FROM   shows
+						 ORDER BY show_id DESC LIMIT 12";   
+			}
+			else if($type == 'updates')
+			{
+				$sql = " SELECT show_id
+						 FROM   shows
+						 ORDER BY update_date DESC LIMIT 12";   
+			}
+			if($query->query($sql))
+			{
+				while($row = $query->get_array())
+				{
+					$no_count = $query->get_numrows();
+					extract($row);		
+				}
 			}
 		}
-		else if($type == 'today'){
-			$sql2 = "SET time_zone = '-5:00'";	
-			$query->query($sql2);
-			if($filter == "watching"){	
-				$tiwiii_uid = $_SESSION['tiwiii_uids8565'];
-				$sql = " SELECT s.tvdb_id, s.show_name
-						  FROM   episodes e, shows s LEFT JOIN user_fave uf on uf.tvdb_id = s.tvdb_id and uf.userid = '$tiwiii_uid' LEFT JOIN user_watch uw on uw.tvdb_id = s.tvdb_id and uw.userid = '$tiwiii_uid'
-						  WHERE  firstaired = CURDATE()
-						  AND    e.tvdb_id = s.tvdb_id
-						  AND    uw.uw_id IS NOT NULL
-						  GROUP BY s.tvdb_id";     
-			}else{
-				$sql = " SELECT s.tvdb_id, s.show_name
-						  FROM   episodes e, shows s
-						  WHERE  firstaired = CURDATE()
-						  AND    e.tvdb_id = s.tvdb_id
-						  GROUP BY s.tvdb_id";     
-			}
-	    }
-		else if($type == 'yesterday'){
-			$sql2 = "SET time_zone = '-5:00'";	
-			$query->query($sql2);
-			
-			if($filter == "watching"){	
-				$tiwiii_uid = $_SESSION['tiwiii_uids8565'];
-				$sql = " SELECT s.tvdb_id, s.show_name
-						  FROM   episodes e, shows s LEFT JOIN user_fave uf on uf.tvdb_id = s.tvdb_id and uf.userid = '$tiwiii_uid' LEFT JOIN user_watch uw on uw.tvdb_id = s.tvdb_id and uw.userid = '$tiwiii_uid'
-						  WHERE  firstaired = date_sub(curdate(),interval 1 day)
-						  AND    e.tvdb_id = s.tvdb_id
-						  AND    uw.uw_id IS NOT NULL
-						  GROUP BY s.tvdb_id";     
-			}else{	
-			$sql = " SELECT s.tvdb_id, s.show_name
-					  FROM   episodes e, shows s
-					  WHERE  firstaired = date_sub(curdate(),interval 1 day)
-					  AND    e.tvdb_id = s.tvdb_id
-					  GROUP BY s.tvdb_id";  
-			}
-	    }else if($type == 'new'){
-	    $sql = " SELECT show_id
-	    		 FROM   shows
-	    		 ORDER BY show_id DESC LIMIT 12";   
-	    }
-	    else if($type == 'updates'){
-	    $sql = " SELECT show_id
-	    		 FROM   shows
-	    		 ORDER BY update_date DESC LIMIT 12";   
-	    }
-	    if($query->query($sql))
-	    {
-	        while($row = $query->get_array())
-	    	{
-	    		$no_count = $query->get_numrows();
-	    		extract($row);		
-	    	}
-	    }
-		}else
+		else
 		{
 			if(isset($_SESSION['tiwiii_uids8565']))
 			{
@@ -182,36 +204,49 @@ class Index_Model extends Model
 		{
 			if($type == 'yesterday' || $type == 'today')
 			{
-				if($filter != "watching"){
-					$msg .= "<li class='filters selected' type='".$type."' page='".$page."'   >All<li>";
-					$msg .= "<li class='filters' type='".$type."' page='".$page."'  filter='watching' >Watching<li>";
+				
+				$schedule_filters = array('all','watching');
+			
+				foreach($schedule_filters as $sf)
+				{
+					if($filter == $sf)
+					{
+						$msg .= "<a href='".URL."home/".$type."/1/".$sf."' class='filters selected' type='".$type."' page='".$page."'  filter='".$sf."' >".strtoupper($sf)."</a>";
+					}
+					else
+					{
+						$msg .= "<a href='".URL."home/".$type."/1/".$sf."' class='filters' type='".$type."' page='".$page."'  filter='".$sf."' >".strtoupper($sf)."</a>";
+					}
 				}
-				else{
-					$msg .= "<li class='filters' type='".$type."' page='".$page."'   >All<li>";
-					$msg .= "<li class='filters selected' type='".$type."' page='".$page."'  filter='watching' >Watching<li>";
+				
+				if($filter != "watching")
+				{
+					/*$msg .= "<li class='filters selected' type='".$type."' page='".$page."'   >All<li>";
+					$msg .= "<li class='filters' type='".$type."' page='".$page."'  filter='watching' >Watching<li>";*/
+				
+				}
+				else
+				{
+					/*$msg .= "<li class='filters' type='".$type."' page='".$page."'   >All<li>";
+					$msg .= "<li class='filters selected' type='".$type."' page='".$page."'  filter='watching' >Watching<li>";*/
 				}
 			}
 		}
 		
 		if($type == 'fall')
 		{
-			if($filter == "All")
+			$fall_filters = array('all','airing','ended');
+			
+			foreach($fall_filters as $ff)
 			{
-				$msg .= "<li class='filters selected' type='".$type."' page='".$page."'  filter='All' >All<li>";
-				$msg .= "<li class='filters' type='".$type."' page='".$page."'  filter='airing' >Airing<li>";
-				$msg .= "<li class='filters' type='".$type."' page='".$page."'  filter='canceled' >Ended<li>";
-			}
-			else if($filter == "airing")
-			{
-				$msg .= "<li class='filters' type='".$type."' page='".$page."' filter='All'  >All<li>";
-				$msg .= "<li class='filters selected' type='".$type."' page='".$page."'  filter='airing' >Airing<li>";
-				$msg .= "<li class='filters' type='".$type."' page='".$page."'  filter='canceled' >Ended<li>";
-			}
-			else if($filter == "canceled")
-			{
-				$msg .= "<li class='filters' type='".$type."' page='".$page."'  filter='All' >All<li>";
-				$msg .= "<li class='filters' type='".$type."' page='".$page."'  filter='airing' >Airing<li>";
-				$msg .= "<li class='filters selected' type='".$type."' page='".$page."'  filter='canceled' >Ended<li>";
+				if($filter == $ff)
+				{
+					$msg .= "<a href='".URL."home/".$type."/1/".$ff."' class='filters selected' type='".$type."' page='".$page."'  filter='".$ff."' >".strtoupper($ff)."</a>";
+				}
+				else
+				{
+					$msg .= "<a href='".URL."home/".$type."/1/".$ff."' class='filters' type='".$type."' page='".$page."'  filter='".$ff."' >".strtoupper($ff)."</a>";
+				}
 			}
 		}
 
@@ -305,7 +340,7 @@ class Index_Model extends Model
 						 ";			
 			}
 			
-			if($filter == "canceled")
+			if($filter == "ended")
 			{	
 				$sql .= " AND    show_status = 'Ended'";     
 			}
@@ -577,11 +612,39 @@ class Index_Model extends Model
 	    	$msg .= "</div>";
 			
 		}
+		$filter_home = array('fall'=>'Fall 2011-2012',
+							 'recommendations'=>'Recommendations',
+							 'schedule'=>'Schedule',
+							 'today'=>'Airing Today',
+							 'yesterday'=>'Aired Yesterday',
+							 'top'=>'Top Rated',
+							 'faved'=>'Most Favorited',
+							 'watched'=>'Most Watched',
+							 'new'=>'Newly Added',
+							 'updates'=>'Recently Updated');
+
+		$msg .= "<div id='filter-genre'><ul>";
+		foreach($filter_home as $fh=>$value){
+			if($type == $fh)
+			{
+				$msg.="<li><a href='".URL."home/$fh/1' id='".$fh."' class='selected'>$value</a></li>";
+			}
+			else
+			{
+				$msg.="<li><a href='".URL."home/$fh/1' id='".$fh."'>$value</a></li>";
+			}
+		}
+		
+		
+		$msg.= "<li><a class='add-new' href='".URL."show/search/'>Add a Show</a></li>";
+		$msg.= "</ul></div>";
+		
+		
 		 $msg .= "<ul class='pagination'>";
-					if($next <= $pages)$msg .= '<li  type="'.$type.'" filter="'.$filter.'" page="'.$next.'" class="next-page">Next</li>';
+					if($next <= $pages)$msg .= "<a href='".URL."home/".$type."/".$next."/".$filter."' class='next-page'>Next</a>";
 					if($pages>1)if($page <= $pages) $msg .= "<li class='page-info'>$page of $pages</li>";
-					if($prev > 0)$msg .= '<li  type="'.$type.'" filter="'.$filter.'" page="'.$prev.'" class="prev-page">Prev</li>';
-		$msg .= "</ul>";
+					if($prev > 0)$msg .= "<a href='".URL."home/".$type."/".$prev."/".$filter."' class='prev-page'>Prev</li>";
+		 $msg .= "</ul>";
 		}
 		else
 		{
@@ -678,11 +741,12 @@ class Index_Model extends Model
 			
 				$next= $page+1;
 				$prev = $next - 2;
-				 $msg .= "<ul class='pagination'>";
-					if($next <= $pages)$msg .= '<li  type="'.$type.'" filter="'.$filter.'" page="'.$next.'" class="next-page">Next</li>';
+				
+				$msg .= "<ul class='pagination'>";
+					if($next <= $pages)$msg .= "<a href='".URL."home/".$type."/".$next."/".$filter."' class='next-page'>Next</a>";
 					if($pages>1)if($page <= $pages) $msg .= "<li class='page-info'>$page of $pages</li>";
-					if($prev > 0)$msg .= '<li  type="'.$type.'" filter="'.$filter.'" page="'.$prev.'" class="prev-page">Prev</li>';
-				 $msg .= "</ul>";
+					if($prev > 0)$msg .= "<a href='".URL."home/".$type."/".$prev."/".$filter."' class='prev-page'>Prev</li>";
+		 		$msg .= "</ul>";
 			}
 			else
 			{
@@ -696,6 +760,9 @@ class Index_Model extends Model
 			}
 			
 		}
+		
+		
+		
 		
 	    /*----------------------------------------------------------------------*/
 	    $msg .= "<script>
@@ -730,7 +797,15 @@ class Index_Model extends Model
 		
 	    </script>
 	    ";
-	    echo $msg;
+		if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])=='xmlhttprequest')
+		{
+			echo $msg;
+		}
+		else
+		{
+	    	return $msg;
+		}
+		
 		
 	}
 }

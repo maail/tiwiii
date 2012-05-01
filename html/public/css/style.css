@@ -208,12 +208,46 @@ h3{
 	text-decoration:line-through !important;
 }
 
+/*-----------------------------------------------(show-nav)-----------------------------------------*/
+.show-nav{
+    display: block;
+    margin: 10px 0 -35px 0;
+    padding-right: 1px;
+	float:left; 
+	width:600px; 
+	margin-left:0.8px;
+	margin-top:12px;
+}
+
+.show-nav li{
+	list-style: none;
+	margin: 0 2px 0 15px;
+	color: #AAA;
+	cursor: pointer;
+	text-align: right;
+	text-transform: uppercase;
+	float: left;
+	border-radius: 0;
+	font-size: 12px;
+	padding: 6px 1px;
+}
+
+.show-nav li:hover, .show-nav li:focus{
+    color: #91A231;
+}
+
+.show-nav .selected {
+	 color:#91A231; 
+	 border-top:dashed 1px #BACA92;
+	 padding: 5px 1px;
+}
+
 /*--------------------------------------(filter-genre)-----------------------------------------*/
 #filter-genre{
 	margin:35px 0 0 0;
 	height:20px;
     font-size: 0.9em;
-    float: right;
+    float: left;
 }
 
 #filter-genre ul{
@@ -567,13 +601,13 @@ h3{
 
 #container{
 	margin: 0px 0 0 0;
+	width:800px;
 }
 
 #show-tiles{
 	margin: 30px 0 0 0;
-	padding: 8px 4px 8px 9px;
-	width: 100%;
-	position: relative;
+	padding: 8px 0px 8px 6px;
+	width: 593px;
 	float: left;
 }
 

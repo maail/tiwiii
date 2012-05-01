@@ -62,7 +62,7 @@ class Settings_Model extends Model
 								required: true,
 								minlength: 5,
 								remote: {
-									url: 'http://tiwiii.com/settings/check/user/userval' ,
+									url: 'http://tiwiii2.local/settings/check/user/userval' ,
 									type: 'post' ,
 									complete: function(data){
 										
@@ -75,7 +75,7 @@ class Settings_Model extends Model
 								required: true,
 								email: true,
 								remote: {
-									url: 'http://tiwiii.com/settings/check/email/emailval' ,
+									url: 'http://tiwiii2.local/settings/check/email/emailval' ,
 									type: 'post' ,
 									complete: function(data){
 										
@@ -255,6 +255,45 @@ class Settings_Model extends Model
 				return $valid;
 			}
 		
+		}else if($type == "newuser")
+		{
+			if(isset($_POST["username_new"])){
+				$username = filter_var($_POST["username_new"], FILTER_SANITIZE_STRING);
+			}
+			else{
+				$username = $typeval;
+			}
+			$query    = new Model;
+			
+			
+			if(preg_match("/^[a-zA-Z0-9]+$/", $username))
+			{
+				  $sql = " SELECT count(*) as check_user FROM users WHERE username = '$username'";
+				  if($query->query($sql))
+				  {
+					  while($row = $query->get_array())
+					  {
+						  extract($row);
+					  }
+				  }
+			  
+				  if($check_user == 0)
+				  {
+					  $valid = "true";
+				  }
+				  else
+				  {
+					  $valid = "false";
+				  }
+			}
+			else
+			{
+				$valid = "false";
+			}
+			
+			echo $valid;
+			
+		
 		}
 		else if($type == "email" && !empty($userid))
 		{
@@ -349,6 +388,17 @@ class Settings_Model extends Model
 							  
 				$query->update_array('users',$data, "userid = '$userid'");
 				$_SESSION['msg'] = "Your basic information has been updated";
+				
+				if(isset($_SESSION['username_twitter_tiwiii']))
+				{
+					$_SESSION['username_twitter_tiwiii'] = $username;
+				}
+				else if(isset($_SESSION['username_fb_tiwiii']))
+				{
+					$_SESSION['username_fb_tiwiii'] = $username;
+				}
+				
+				
 			}
 			else{
 				$_SESSION['msg'] = "Your basic information could not be updated";

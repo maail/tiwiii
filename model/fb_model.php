@@ -19,18 +19,18 @@ class FB_Model extends Model
 	public function callback()
 	{
 		#localhost(testing: echotech)
-		/*$facebook = new Facebook(array(
+		$facebook = new Facebook(array(
 		   'appId' => '164586206902892',
 		   'secret' => '1ee5d0ec5cc7aee3a264b2d712ce578d',
 		   'cookie' => true
-		));*/
+		));
 		
 		#server(tiwiii)
-		$facebook = new Facebook(array(
+		/*$facebook = new Facebook(array(
 		   'appId' => '293237607401840',
 		   'secret' => 'c76ba79e5ee9f7178cac9c63092e8180',
 		   'cookie' => true
-		));
+		));*/
 				
 		$user = $facebook->getUser();
 		
@@ -226,9 +226,5 @@ class FB_Model extends Model
 		
 	}
 	
-	/*public function update($status){
-		
-		
 	
-	}*/
 }

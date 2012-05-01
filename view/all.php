@@ -1,6 +1,6 @@
 	<div id="wrapper">
 		<div id="header">
-			<div id="logo"></div>
+			<a href="/" id="logo" ></a>
 			<?php include ('nav.php'); ?>
 		</div>
 		<?php include ('filter-genre.php'); ?>

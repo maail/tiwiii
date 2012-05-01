@@ -1,7 +1,7 @@
 $(document).ready(function()
 {
 	var pagetitle = document.title;
-	var urlpath = "http://tiwiii.com";
+	var urlpath = "http://tiwiii2.local";
 	function loading_show()
 	{
 		$('#wrapper #loading').html("<img src='"+urlpath+"/public/images/loader.gif'/>").fadeIn('fast');

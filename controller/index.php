@@ -25,5 +25,10 @@ class Index extends Controller
 		$this->view->home = $this->model->home($type, $page, $filter);
 	}
 	
+	function genre($type, $page, $filter)
+	{
+		$this->view->home = $this->model->genre($type, $page, $filter);
+	}
+	
 	
 }

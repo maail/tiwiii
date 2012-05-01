@@ -640,11 +640,14 @@ class Index_Model extends Model
 		$msg.= "</ul></div>";
 		
 		
+		
+		 
 		 $msg .= "<ul class='pagination'>";
-					if($next <= $pages)$msg .= "<a href='".URL."home/".$type."/".$next."/".$filter."' class='next-page'>Next</a>";
+					if($next <= $pages)$msg .= "<li><a href='".URL."home/".$type."/".$next."/".$filter."' class='next-page'>Next</a></li>";
 					if($pages>1)if($page <= $pages) $msg .= "<li class='page-info'>$page of $pages</li>";
-					if($prev > 0)$msg .= "<a href='".URL."home/".$type."/".$prev."/".$filter."' class='prev-page'>Prev</li>";
-		 $msg .= "</ul>";
+					if($prev > 0)$msg .= "<li><a href='".URL."home/".$type."/".$prev."/".$filter."' class='prev-page'>Prev</a></li>";
+				$msg .= "</ul>";
+		 
 		}
 		else
 		{
@@ -742,11 +745,15 @@ class Index_Model extends Model
 				$next= $page+1;
 				$prev = $next - 2;
 				
+				
+				
 				$msg .= "<ul class='pagination'>";
-					if($next <= $pages)$msg .= "<a href='".URL."home/".$type."/".$next."/".$filter."' class='next-page'>Next</a>";
+					if($next <= $pages)$msg .= "<li><a href='".URL."home/".$type."/".$next."/".$filter."' class='next-page'>Next</a></li>";
 					if($pages>1)if($page <= $pages) $msg .= "<li class='page-info'>$page of $pages</li>";
-					if($prev > 0)$msg .= "<a href='".URL."home/".$type."/".$prev."/".$filter."' class='prev-page'>Prev</li>";
-		 		$msg .= "</ul>";
+					if($prev > 0)$msg .= "<li><a href='".URL."home/".$type."/".$prev."/".$filter."' class='prev-page'>Prev</a></li>";
+				$msg .= "</ul>";
+				
+				
 			}
 			else
 			{
@@ -805,7 +812,210 @@ class Index_Model extends Model
 		{
 	    	return $msg;
 		}
+	}
+	
+	public function genre($type, $page, $filter)
+	{
+		$query    = new Model();
+		
+		$previous_btn = true;
+	    $next_btn     = true;
+	    $first_btn    = true;
+	    $last_btn     = true;
+	    
+	    $per_page = 12; 
+	    $start    = ($page-1)*$per_page;
+		
+		$showdash = array('science-fiction','mini-series');
+		if(!(in_array($type,$showdash))){$type = str_replace( '-', ' ', $type);}
+	
+	    $cur_page = $page;
+	    
+	    /*----------------------------------------------------------------------*/
+	    if($type == 'all'){
+	    $sql = " SELECT count(*) as no_count
+	             FROM   shows";
+	    }else{
+	    $sql = " SELECT count(*) as no_count
+	    		 FROM   shows
+	    		 WHERE  show_genre LIKE '%$type%'";   
+	    }
+	    if($query->query($sql))
+	    {
+	        while($row = $query->get_array())
+	    	{
+	    		$no_count = $query->get_numrows();
+	    		extract($row);		
+	    	}
+	    }
+	    
+	    $per_page = 12; 
+	    $pages    = ceil($no_count/$per_page);
+	    
+	    $msg = NULL;
+		
+		$next = $page + 1;
+		$prev = $page - 1;
+		
+	
+	    /*----------------------------------------------------------------------*/
+	    if($type == 'all'){
+			if((!isset( $_SESSION['tiwiii_uids8565'])))
+			{
+				$sql = " SELECT     show_name, tvdb_id as s_id FROM shows
+					     ORDER BY   show_id ASC
+					     LIMIT      $start,$per_page";
+			}else{
+				 $tiwiii_uid = $_SESSION['tiwiii_uids8565'];
+				 $sql = " SELECT     show_name, s.tvdb_id as s_id, uf.uf_id, uw.uw_id, uv.uv_id
+				           FROM       shows s LEFT JOIN user_fave uf on uf.tvdb_id = s.tvdb_id and uf.userid = '$tiwiii_uid' LEFT JOIN user_watch uw on uw.tvdb_id = s.tvdb_id and uw.userid = '$tiwiii_uid' LEFT JOIN user_vote uv on uv.tvdb_id = s.tvdb_id and uv.userid = '$tiwiii_uid'
+					       ORDER BY   show_id ASC
+					       LIMIT      $start,$per_page";
+			}
+	    }else{
+		if((!isset( $_SESSION['tiwiii_uids8565'])))
+			{
+				$sql = " SELECT     show_name, tvdb_id as s_id FROM shows
+						 WHERE      show_genre LIKE '%$type%'
+						 ORDER BY   show_id ASC
+						 LIMIT      $start,$per_page ";
+			}else{
+				 $tiwiii_uid = $_SESSION['tiwiii_uids8565'];
+				 $sql = " SELECT     show_name, s.tvdb_id as s_id, uf.uf_id, uw.uw_id, uv.uv_id
+						 FROM 		shows s LEFT JOIN user_fave uf on uf.tvdb_id = s.tvdb_id and uf.userid = '$tiwiii_uid' LEFT JOIN user_watch uw on uw.tvdb_id = s.tvdb_id and uw.userid = '$tiwiii_uid' LEFT JOIN user_vote uv on uv.tvdb_id = s.tvdb_id and uv.userid = '$tiwiii_uid'
+						 WHERE      show_genre LIKE '%$type%'
+						 ORDER BY   show_id ASC
+						 LIMIT      $start,$per_page ";
+			}
+	    }    
+	    if($query->query($sql))
+	    {
+	    	$msg .=  "<div id='show-tiles'>";
+	    	while($row = $query->get_array())
+	    	{
+	    		extract($row);
+	    		$show_no = $s_id;
+	    		$img     = 'public/uploads/series/'.$show_no.'.jpg';
+				
+				if((!isset( $_SESSION['tiwiii_uids8565'])))
+				{
+					$watching = "<li><a alt='Currently Watching' class='remote-buttons' title='Sign in to Tiwiii' id='watching' href='#'>Watching</a></li>";
+					$fave     = "<li><a alt='Favorite' class='remote-buttons' title='Sign in to Tiwiii' id='fave' href='#'>Fave</a></li>";
+					$like     = "<li><a alt='Like It' class='remote-buttons' title='Sign in to Tiwiii' id='like' href='#'>Like it</a></li>";
+				}
+				else
+				{
+								
+					if(!empty($uf_id)){
+						$fave     = "<li><a alt='$show_name'  class='remote-buttons' title='Remove from your favourites' id='faveselected' href='#$show_no'>Fave</a></li>";
+					}else{
+						$fave     = "<li><a alt='$show_name'  class='remote-buttons' title='Add to your favourites' id='fave' href='#$show_no'>Fave</a></li>";					
+					}
+					
+					if(!empty($uw_id)){
+						$watching = "<li><a alt='$show_name' class='remote-buttons' title='Remove from currently watching' id='watchselected' href='#$show_no'>Watching</a></li>";
+					}else{
+						$watching = "<li><a alt='$show_name' class='remote-buttons' title='Add to currently watching' id='watching' href='#$show_no'>Watching</a></li>";
+					}
+					
+					if(!empty($uv_id)){
+						$like     = "<li><a alt='$show_name' class='remote-buttons' title='Do not like it anymore?' id='dislike' href='#$show_no'>Disike it</a></li>";
+					}else{
+						$like     = "<li><a alt='$show_name' class='remote-buttons' title='Like it?' id='like' href='#$show_no'>Like it</a></li>";
+					}
+				}
+				
+				require_once('show_model.php');
+				$show  = new Show_Model;
+				$votes = $show->count_vote($s_id);
+				
+				$vote_no = "<a id='circle' href='".URL."show/view/$s_id'><p>$votes</p></a>";
+				
+	    		if (file_exists($img)) {
+	    			$msg .= " <div class='show-thumb'>
+	    						<div class='imgwrap'>
+	    						<div class='span'>
+	    							<h1 id='test'>$show_name</h1>
+									$vote_no
+	    							<ul class = 'remote-control'>
+	    								$like
+										$watching
+										$fave
+	    							</ul>
+	    						</div>
+	    							<a href='".URL."show/view/$s_id'>
+	    								<img src = '".URL."public/image.php/$s_id.jpg?width=120&amp;image=".URL."public/uploads/series/$s_id.jpg' class='poster'>
+	    							</a>
+	    						</div> 
+	    					  </div>
+	    					  ";
+	    		}
+	    	}
+	    	$msg .= "</div>";
+	    }
 		
 		
+        $filter_genre[] = "all";
+		$sql = " SELECT genre as current_gen from genres";
+    	if($query->query($sql))
+    	{   
+            while($row = $query->get_array())
+    		{
+    			extract($row);
+    			$href= str_replace(' ', '-', $current_gen);
+				$href = strtolower($href);
+				$filter_genre[] = $href;
+                				
+    		}
+    	}    		
+		
+		
+		$msg .= "<div id='filter-genre'><ul>";
+		foreach($filter_genre as $fg){
+			if($type == $fg)
+			{
+				$msg.="<li><a href='".URL."genre/$fg/1' id='".$fg."' class='selected'>$fg</a></li>";
+			}
+			else
+			{
+				$msg.="<li><a href='".URL."genre/$fg/1' id='".$fg."'>$fg</a></li>";
+			}
+		}
+		
+		
+		$msg.= "<li><a class='add-new' href='".URL."show/search/'>Add a Show</a></li>";
+		$msg.= "</ul></div>";	
+			
+		
+		$msg .= "<ul class='pagination'>";
+					if($next <= $pages)$msg .= "<li><a href='".URL."genre/".$type."/".$next."' class='next-page'>Next</a></li>";
+					if($pages>1)if($page <= $pages) $msg .= "<li class='page-info'>$page of $pages</li>";
+					if($prev > 0)$msg .= "<li><a href='".URL."genre/".$type."/".$prev."' class='prev-page'>Prev</a></li>";
+		$msg .= "</ul>";
+	    /*----------------------------------------------------------------------*/
+	    $msg .= "<script>
+	        $('.show-thumb .span, .poster').hover(
+	    	function(){
+	    	    $(this).closest('.imgwrap').find('img.poster').css({'background' : '#000', 'opacity' : '.13'});
+	    	},
+	    	function(){
+	    	    $(this).closest('.imgwrap').find('img.poster').css({'background' : '', 'opacity' : ''});
+	    	}
+	    );
+	    // tool tip
+	    $(function(){   
+	    	$('.remote-buttons').tipTip({defaultPosition:'top'});
+	    });
+		
+	    </script>
+	    ";
+	    if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])=='xmlhttprequest')
+		{
+			echo $msg;
+		}
+		else
+		{
+	    	return $msg;
+		}
 	}
 }

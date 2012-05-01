@@ -18,7 +18,7 @@ class bootstrap
 		$index_url = array('fall','recommendations','next','today','yesterday','top','faved','watched','new','updates');
 		$tv_url = array('all','drama');
 		
-		print_r($url);
+		//print_r($url);
 		
 		if(empty($url[0])){    					#if no url redirect it to index.php and return false
 			require '../controller/index.php';
@@ -36,6 +36,17 @@ class bootstrap
 			if(isset($url[2])){$page = $url[2];}else{$page = NULL;}
 			if(isset($url[3])){$filter = $url[3];}else{$filter = NULL;}
 			$controller->home($type, $page, $filter);
+			$controller->index();
+		}
+		else if($url[0] == "genre")
+		{
+			require '../controller/index.php';
+			$controller = new Index();
+			$controller->loadModel('index');
+			if(isset($url[1])){$type = $url[1];}else{$type = NULL;}
+			if(isset($url[2])){$page = $url[2];}else{$page = NULL;}
+			if(isset($url[3])){$filter = $url[3];}else{$filter = NULL;}
+			$controller->genre($type, $page, $filter);
 			$controller->index();
 		}
 		else
